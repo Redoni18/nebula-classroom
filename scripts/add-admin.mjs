@@ -39,6 +39,12 @@ function askHidden(question) {
   });
 }
 
+// Asking needs a real terminal; without one (Claude Code's "!" commands, CI) the
+// question could never be answered.
+if (!process.env.ADMIN_PASSWORD && !process.stdin.isTTY) {
+  console.error("No terminal to type the password into: run this in a Terminal window, or set ADMIN_PASSWORD.");
+  process.exit(1);
+}
 const password = process.env.ADMIN_PASSWORD ?? (await askHidden("Password (10+ characters): "));
 if (password.length < 10) {
   console.error("The password needs at least 10 characters.");
