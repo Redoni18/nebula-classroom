@@ -174,10 +174,15 @@ Off-site (launch, step 5)
    `wrangler email sending dns get nebulaclassroom.com`).
 4. **SEO content** — the four activity pages with localized slugs, an FAQ
    section, internal links between them, breadcrumbs.
-5. **Launch** — admin account nebulacoworkinspace@gmail.com
-   (`admin:add --remote`), create D1 (EU) and apply migrations, Turnstile widget
-   for the domain, custom domain, deploy, the off-site list in §5, Lighthouse
-   and Rich Results checks.
+5. **Launch** (live 2026-10-26) — done: D1 `nebula-classroom` (EU
+   jurisdiction) with migrations, Turnstile site key in `.env.production`,
+   Worker secrets IP_HASH_SALT and BETTER_AUTH_SECRET, custom domains
+   nebulaclassroom.com and www (www → 308 to the apex), first deploy.
+   Left: the TURNSTILE_SECRET_KEY secret (the user adds it; until then the
+   booking form and admin sign-in refuse everyone), the admin account
+   nebulacoworkinspace@gmail.com (`admin:add --remote`, the user picks the
+   password), the 301 from the old Vercel site, the off-site list in §5,
+   Lighthouse and Rich Results checks on the live site.
 
 ## 8. Running it
 
