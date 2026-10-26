@@ -177,12 +177,13 @@ Off-site (launch, step 5)
 5. **Launch** (live 2026-10-26) — done: D1 `nebula-classroom` (EU
    jurisdiction) with migrations, Turnstile site key in `.env.production`,
    Worker secrets IP_HASH_SALT and BETTER_AUTH_SECRET, custom domains
-   nebulaclassroom.com and www (www → 308 to the apex), first deploy.
-   Left: the TURNSTILE_SECRET_KEY secret (the user adds it; until then the
-   booking form and admin sign-in refuse everyone), the admin account
-   nebulacoworkinspace@gmail.com (`admin:add --remote`, the user picks the
-   password), the 301 from the old Vercel site, the off-site list in §5,
-   Lighthouse and Rich Results checks on the live site.
+   nebulaclassroom.com and www (www → 308 to the apex), first deploy, the
+   TURNSTILE_SECRET_KEY secret and the admin account (both set by the user),
+   a real booking and owner email checked by the user, and the old Vercel site
+   301ing every path to the new home page (`vercel.json` in Redoni18/nebula).
+   Left: Search Console for the new domain plus Change of Address from the old
+   one, the rest of the off-site list in §5, Lighthouse and Rich Results checks
+   on the live site.
 
 ## 8. Running it
 
