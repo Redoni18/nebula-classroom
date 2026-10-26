@@ -41,6 +41,8 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // www is attached to the Worker only to send people to the one address.
+      { source: "/:path*", has: [{ type: "host", value: "www.nebulaclassroom.com" }], destination: "https://nebulaclassroom.com/:path*", permanent: true },
       { source: "/sq", destination: "/", permanent: true },
       { source: "/sq/:path*", destination: "/:path*", permanent: true },
     ];

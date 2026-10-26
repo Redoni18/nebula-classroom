@@ -33,6 +33,7 @@ function business(locale: Locale, dict: Dictionary): LocalBusiness {
       postalCode: site.address.postalCode,
       addressCountry: site.address.countryCode,
     },
+    geo: { "@type": "GeoCoordinates", ...site.geo },
     hasMap: site.mapUrl,
     areaServed: { "@type": "City", name: site.address.city[locale] },
     openingHoursSpecification: {

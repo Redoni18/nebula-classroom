@@ -25,7 +25,7 @@ the pointer).
 | Languages | Albanian (default, at `/`), Macedonian (`/mk`), English (`/en`) | Tetovo's two languages plus English. No automatic redirects by browser language (Google advises against them); hreflang tells search engines which page is which. |
 | Fonts | Archivo (the design's font; variable width + weight) + Inter Tight for Cyrillic only | Archivo has no Cyrillic. The browser falls back per letter, so Macedonian text uses Inter Tight and Latin stays Archivo. The stack is built in `app/[locale]/layout.tsx` (next/font's own Arial fallback would catch Cyrillic first). |
 | Dates in the browser | Month and weekday names written out in `lib/i18n/calendar-names.ts` | Chrome has no Albanian or Macedonian date names (Intl falls back to English). |
-| Build | `next build` (standalone output) then `opennextjs-cloudflare build --skipNextBuild`; `wrangler` called directly | OpenNext's own preview/deploy spawn `pnpm`, which isn't on PATH on this Mac (only `corepack pnpm`). |
+| Build | `next build` (standalone output) then `opennextjs-cloudflare build --skipNextBuild`; `wrangler` called directly (`OPEN_NEXT_DEPLOY=true` stops `wrangler deploy` from handing over to OpenNext's) | OpenNext's own preview/deploy spawn `pnpm`, which isn't on PATH on this Mac (only `corepack pnpm`). |
 | Scrolling | Lenis (`components/site/smooth-scroll.tsx`): eased wheel scrolling and smooth jumps to #sections | Native scrolling felt jittery to the user (2026-10-26). Off for visitors who ask for reduced motion. |
 | Forms | shadcn Field, Input, Select, Textarea, styled cream with an ink focus | Asked for (no native select menus). |
 | Page cache | OpenNext static-assets cache: prerendered pages served from the Worker's assets | Nothing revalidates; no R2/KV needed. `populateCache` must run before `wrangler dev`/`deploy` (the scripts do it). |
@@ -44,8 +44,10 @@ the pointer).
 - Hours: open every day; bookable hours 08:00–22:00 (slots start 8:00…21:00).
 - Equipment: fast WiFi, A/C, TV + whiteboard, desks and chairs, bathroom and kitchen, city parking nearby.
 
-Open: exact map coordinates / Google Maps link, the production domain, and
-whether the room has a Google Business Profile (see §9).
+- Map: https://www.google.com/maps?cid=11055459592570318201 (pin at 42.0110776,
+  20.9717364; on Maps it's named by its plus code 2X6C+CPM, not "Nebula").
+
+Open: whether the room gets a Google Business Profile (see §9).
 
 ## 3. Pages and addresses
 
@@ -147,40 +149,49 @@ Off-site (launch, step 5)
 
 ## 6. Folder layout
 
-See README.md for the map and one action followed through the code.
+`app/` addresses only · `features/` page code (home, booking, admin, seo) · `components/` shared pieces and shadcn · `lib/` site facts, languages, database, auth.
 
 ## 7. Steps (one session each)
 
 1. **Foundation + public site** (done 2026-10-26) — scaffold, tokens, i18n routing and copy in 3
    languages, home page per the design, privacy page, SEO checklist above, D1
    schema + migration, availability API, booking widget, booking requests saved
-   to D1 (local). README.
+   to D1 (local).
 2. **Admin** (done 2026-10-26) — Better Auth (email + password, D1), `/admin` in the dashboard-01
    frame: bookings table (filter by status; ⋯ confirm / decline / edit /
    archive / delete), add a booking by hand (phone bookings, `source: admin`),
    week view of the room, closed days (holidays) that the public calendar
    respects.
-3. **Notifications** — the owner hears about each new request at once (email
-   through Resend from the site's domain, or a Telegram/Viber message: pick in
-   this step); the visitor gets an email when they gave one and when the booking
-   is confirmed.
+3. **Notifications** (done 2026-10-26) — the owner gets an email for every
+   new request (`features/booking/server/notify.ts`), in Albanian, to
+   nebulacoworkinspace@gmail.com, from bookings@nebulaclassroom.com through
+   Cloudflare Email Sending (binding `EMAIL`); replies go to the client's email.
+   Sent after the request is saved (`waitUntil`), so a failed email never loses
+   a booking. Locally the emulated email lands in `.wrangler/tmp/email/`. Email
+   only (no SMS/Telegram) and no emails to visitors, by the user's choice.
+   Email Sending was enabled on nebulaclassroom.com on 2026-10-26 (SPF, DKIM,
+   DMARC and bounce MX records are live; check with
+   `wrangler email sending dns get nebulaclassroom.com`).
 4. **SEO content** — the four activity pages with localized slugs, an FAQ
    section, internal links between them, breadcrumbs.
-5. **Launch** — create D1 (EU) and apply migrations, Turnstile widget for the
-   domain, custom domain, deploy, the off-site list in §5, Lighthouse and Rich
-   Results checks.
+5. **Launch** — admin account nebulacoworkinspace@gmail.com
+   (`admin:add --remote`), create D1 (EU) and apply migrations, Turnstile widget
+   for the domain, custom domain, deploy, the off-site list in §5, Lighthouse
+   and Rich Results checks.
 
 ## 8. Running it
 
-See README.md ("Running it"). In short: `corepack pnpm install`,
+In short: `corepack pnpm install`,
 `corepack pnpm db:migrate:local`, `corepack pnpm dev`; `corepack pnpm preview`
-runs the real Worker locally.
+runs the real Worker locally. Publishing: `corepack pnpm db:migrate:remote` when
+there's a new migration, then `corepack pnpm run deploy` (with `run`: a bare
+`pnpm deploy` is pnpm's own command).
 
 ## 9. Open questions
 
 - ~~Production domain~~: **nebulaclassroom.com**, bought 2026-10-26 (in `.env.production`).
-- Exact location: Google Maps link (for `geo` and the map button).
+- ~~Exact location~~: the owner's Maps link and pin (§2), used for `geo` and the map button.
 - Any prices to show, or always "Ask for a quote"?
 - Admin language: built in plain standard Albanian (`features/admin/copy.ts`, one file to translate if English is wanted).
-- Notifications (step 3): who gets told about a new request, and how (email to which address, Telegram, Viber)?
+- ~~Notifications~~: email to nebulacoworkinspace@gmail.com (2026-10-26). The same address is the admin login.
 - Native-speaker check of the Macedonian copy.

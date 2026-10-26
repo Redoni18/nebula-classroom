@@ -1,10 +1,12 @@
 // POST /api/bookings: a booking request from the calendar. Checks the form,
-// the honeypot and Turnstile, then hands over to createBooking().
+// the honeypot and Turnstile, hands over to createBooking(), then emails the
+// owner in the background (notify.ts) so the visitor doesn't wait for it.
 
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getDb } from "@/lib/db";
 import { bookingRequestSchema, fieldErrors, type BookingResponse } from "@/features/booking/model/request";
 import { createBooking } from "@/features/booking/server/create-booking";
+import { notifyOwner } from "@/features/booking/server/notify";
 import { clientIp, hashIp, verifyTurnstile } from "@/features/booking/server/protection";
 
 function answer(body: BookingResponse, status: number) {
@@ -25,7 +27,7 @@ export async function POST(request: Request) {
     return answer({ ok: false, error: "invalid", fields: fieldErrors(parsed.error) }, 400);
   }
 
-  const { env } = getCloudflareContext();
+  const { env, ctx } = getCloudflareContext();
   const ip = clientIp(request);
   if (!(await verifyTurnstile(env.TURNSTILE_SECRET_KEY, parsed.data.turnstileToken, ip))) {
     return answer({ ok: false, error: "captcha" }, 400);
@@ -35,6 +37,11 @@ export async function POST(request: Request) {
     const result = await createBooking(getDb(), parsed.data, { ipHash: await hashIp(ip, env.IP_HASH_SALT), now: Date.now() });
     switch (result.kind) {
       case "created":
+        ctx.waitUntil(
+          notifyOwner(env.EMAIL, { code: result.code, request: parsed.data, sessions: result.sessions, origin: new URL(request.url).origin }).catch(
+            (error) => console.error("Emailing the owner failed for", result.code, error),
+          ),
+        );
         return answer({ ok: true, code: result.code, phone: parsed.data.phone }, 201);
       case "conflict":
         return answer({ ok: false, error: "conflict", conflicts: result.conflicts }, 409);

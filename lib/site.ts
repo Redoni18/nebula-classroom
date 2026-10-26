@@ -14,6 +14,11 @@ export const site = {
     { display: "070 470 555", tel: "+38970470555", international: "+389 70 470 555" },
   ],
   email: "nebulacoworkinspace@gmail.com",
+  /** Where new booking requests are emailed, and the sender they come from. */
+  notifications: {
+    to: "nebulacoworkinspace@gmail.com",
+    from: { name: "Nebula Classroom", email: "bookings@nebulaclassroom.com" },
+  },
   instagram: "https://www.instagram.com/nebulacowork_te/",
   address: {
     street: { sq: "Rr. 19 Nëntori, Kompleksi Lovec", mk: "Ул. 19 Ноември, Комплекс Ловец", en: "19 Nëntori St., Lovec Complex" },
@@ -23,8 +28,9 @@ export const site = {
     countryCode: "MK",
     region: "Polog",
   },
-  /** Google Maps search for the address until we have the exact pin (SPEC §9). */
-  mapUrl: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("Nebula Co-Working Space, 19 Nentori, Kompleksi Lovec, Tetovo 1200"),
+  /** The room's pin on Google Maps (from the owner, 2026-10-26) and its coordinates. */
+  mapUrl: "https://www.google.com/maps?cid=11055459592570318201",
+  geo: { latitude: 42.0110776, longitude: 20.9717364 },
   /** Open every day; these are also the bookable hours (features/booking/model/rules.ts). */
   hours: { opens: "08:00", closes: "22:00" },
   photos: {

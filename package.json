@@ -13,7 +13,7 @@
     "db:migrate:local": "wrangler d1 migrations apply nebula-classroom --local",
     "db:migrate:remote": "wrangler d1 migrations apply nebula-classroom --remote",
     "preview": "corepack pnpm build:worker && opennextjs-cloudflare populateCache local && wrangler dev",
-    "deploy": "node scripts/check-release.mjs && corepack pnpm build:worker && opennextjs-cloudflare populateCache remote && wrangler deploy",
+    "deploy": "node scripts/check-release.mjs && corepack pnpm build:worker && opennextjs-cloudflare populateCache remote && OPEN_NEXT_DEPLOY=true wrangler deploy",
     "images": "node scripts/make-images.mjs",
     "build:worker": "next build && opennextjs-cloudflare build --skipNextBuild",
     "admin:add": "node scripts/add-admin.mjs"

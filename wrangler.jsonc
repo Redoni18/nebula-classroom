@@ -16,16 +16,29 @@
   // next/image resizes the photos through Cloudflare Images.
   "images": { "binding": "IMAGES" },
   "observability": { "enabled": true },
+  // The site answers only at its own domain; www is there to redirect to it
+  // (next.config.ts). No *.workers.dev copy for search engines to find.
+  "routes": [
+    { "pattern": "nebulaclassroom.com", "custom_domain": true },
+    { "pattern": "www.nebulaclassroom.com", "custom_domain": true }
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "nebula-classroom",
-      // Placeholder until launch (SPEC step 5): `wrangler d1 create nebula-classroom
-      // --jurisdiction eu`, then put its id here. Local runs use their own copy
-      // in .wrangler/state and don't need the real id.
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      // The live database (created 2026-10-26 with --jurisdiction eu: its data
+      // stays in the EU). Local runs use their own copy in .wrangler/state.
+      "database_id": "7604d50d-bcb1-403e-99f7-b30eeff02f75",
       "migrations_dir": "migrations"
     }
+  ],
+  // Booking notifications to the owner (features/booking/server/notify.ts),
+  // through Cloudflare Email Sending, which only sends from this address
+  // (enabled on the domain 2026-10-26).
+  "send_email": [
+    { "name": "EMAIL", "allowed_sender_addresses": ["bookings@nebulaclassroom.com"] }
   ],
   // Public settings. Secrets (TURNSTILE_SECRET_KEY, IP_HASH_SALT,
   // BETTER_AUTH_SECRET) are Worker secrets in production and come from

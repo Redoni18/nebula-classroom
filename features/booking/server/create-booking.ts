@@ -17,6 +17,7 @@ import {
   sessionHours,
   totalHours,
   type PlanProblem,
+  type Session,
 } from "../model/rules";
 import { getTakenHours } from "./availability";
 
@@ -29,7 +30,7 @@ const HOUR_ROWS_PER_INSERT = 30;
 const CODE_LETTERS = "ACDEFGHJKMNPQRTUVWXY34679";
 
 export type CreateResult =
-  | { kind: "created"; code: string }
+  | { kind: "created"; code: string; sessions: Session[] }
   | { kind: "invalid"; problem: PlanProblem }
   | { kind: "conflict"; conflicts: { date: string; hours: number[] }[] }
   | { kind: "tooMany" };
@@ -102,7 +103,7 @@ export async function createBooking(
     if (current.length > 0) return { kind: "conflict", conflicts: current };
     throw error;
   }
-  return { kind: "created", code };
+  return { kind: "created", code, sessions };
 }
 
 function makeCode(): string {
