@@ -1,0 +1,34 @@
+// The Cloudflare Worker that runs the site (OpenNext output) and its database.
+// `corepack pnpm preview` runs the built Worker locally on workerd;
+// `corepack pnpm dev` reads the D1 binding from here too (next.config.ts).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nebula-classroom",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  // Self-reference OpenNext uses for its cache (https://opennext.js.org/cloudflare/caching).
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "nebula-classroom" }],
+  // next/image resizes the photos through Cloudflare Images.
+  "images": { "binding": "IMAGES" },
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nebula-classroom",
+      // Placeholder until launch (SPEC step 5): `wrangler d1 create nebula-classroom
+      // --jurisdiction eu`, then put its id here. Local runs use their own copy
+      // in .wrangler/state and don't need the real id.
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // Public settings. Secrets (TURNSTILE_SECRET_KEY, IP_HASH_SALT,
+  // BETTER_AUTH_SECRET) are Worker secrets in production and come from
+  // .dev.vars locally.
+  "vars": {}
+}

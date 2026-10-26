@@ -1,0 +1,21 @@
+# Packages whose install scripts may run: esbuild and workerd ship native
+# binaries (wrangler and OpenNext need them); sharp makes the photo sizes.
+allowBuilds:
+  esbuild: true
+  workerd: true
+  sharp: true
+  unrs-resolver: false
+minimumReleaseAgeExclude:
+  - '@better-auth/core@1.7.13'
+  - '@better-auth/drizzle-adapter@1.7.13'
+  - '@better-auth/kysely-adapter@1.7.13'
+  - '@better-auth/memory-adapter@1.7.13'
+  - '@better-auth/mongo-adapter@1.7.13'
+  - '@better-auth/prisma-adapter@1.7.13'
+  - '@better-auth/telemetry@1.7.13'
+  - better-auth@1.7.13
+
+# pnpm checks the install before every script and runs `pnpm install` itself
+# when package.json changed; plain `pnpm` isn't on PATH on this Mac (only
+# `corepack pnpm`), so that check fails. Run `corepack pnpm install` yourself.
+verifyDepsBeforeRun: false

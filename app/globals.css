@@ -1,0 +1,217 @@
+/* The site's look: colours, fonts, radii and the square grid from the design
+   (design/Website.pdf). Light only: the site never follows the system's dark mode.
+   Components use the shadcn names (bg-background, text-primary…) or the brand
+   names (bg-lime, bg-ink, bg-cream…), both defined here. */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@theme inline {
+  /* Brand */
+  --color-lime: var(--lime);
+  --color-lime-soft: var(--lime-soft);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-line: var(--ink-line);
+  --color-cream: var(--cream);
+  --color-cream-line: var(--cream-line);
+  --color-paper: var(--paper);
+  --color-muted-ink: var(--muted-ink);
+
+  /* shadcn */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Archivo for Latin letters, Inter Tight for Cyrillic (set in app/[locale]/layout.tsx). */
+  --font-sans: var(--font-stack);
+  --font-heading: var(--font-sans);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --lime: #c7e03c;
+  --lime-soft: #e4f09e;
+  --ink: #0b0b0b;
+  --ink-2: #191919;
+  --ink-line: #2a2a2a;
+  --cream: #f4f4ec;
+  --cream-line: #dadad2;
+  --paper: #ffffff;
+  --muted-ink: #66665f;
+
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: var(--cream);
+  --secondary-foreground: var(--ink);
+  --muted: var(--cream);
+  --muted-foreground: var(--muted-ink);
+  --accent: var(--lime);
+  --accent-foreground: var(--ink);
+  --destructive: #c2410c;
+  --border: var(--cream-line);
+  --input: var(--cream-line);
+  --ring: var(--ink);
+  --radius: 1rem;
+
+  /* The admin's sidebar (shadcn sidebar) */
+  --sidebar: #fbfbf7;
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--ink);
+  --sidebar-primary-foreground: var(--paper);
+  --sidebar-accent: var(--cream);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--cream-line);
+  --sidebar-ring: var(--ink);
+
+  /* The square grid behind every section; each section sets its own line colour. */
+  --grid-size: 48px;
+  --grid-line: rgb(11 11 11 / 0.09);
+
+  color-scheme: light;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --grid-size: 64px;
+  }
+}
+
+/* Arial resized to Archivo's proportions while Archivo loads (no layout jump),
+   for Latin letters only, so Cyrillic still reaches Inter Tight. The numbers
+   are the ones next/font computes for Archivo. */
+@font-face {
+  font-family: "Archivo Latin Fallback";
+  src: local("Arial");
+  ascent-override: 88.96%;
+  descent-override: 21.28%;
+  line-gap-override: 0%;
+  size-adjust: 98.7%;
+  unicode-range: U+0000-024F, U+1E00-1EFF, U+2000-206F, U+20AC, U+2122, U+2190-21FF;
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  background-position: center top;
+}
+
+/* The page width every section lines up to (16px gutter on phones). */
+@utility wrap {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1400px;
+  padding-inline: 1rem;
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
+  }
+  @media (min-width: 1280px) {
+    padding-inline: 3.5rem;
+  }
+}
+
+/* The heavy uppercase headlines of the design. */
+@utility font-display {
+  font-weight: 900;
+  font-stretch: 108%;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+}
+
+@layer components {
+  /* "What will you teach here?" cards: dark, and lime under the pointer or keyboard focus. */
+  .teach-card {
+    border: 1px solid var(--ink-line);
+    background: linear-gradient(to bottom, var(--ink-2), var(--ink));
+    color: var(--paper);
+    transition: background 0.25s, color 0.25s, border-color 0.25s;
+  }
+  .teach-card:hover,
+  .teach-card:focus-visible {
+    border-color: var(--lime);
+    background: var(--lime);
+    color: var(--ink);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    -webkit-text-size-adjust: 100%;
+    /* Without JavaScript, jumps are still smooth; with it, Lenis animates them
+       (components/site/smooth-scroll.tsx) and the browser's own smoothing is off. */
+    scroll-behavior: smooth;
+    /* Room for the floating header when a link jumps to #book, #calendar… (the
+       sections themselves add no extra margin, or the two would add up). */
+    scroll-padding-top: 7.5rem;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01" off;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 3px;
+  }
+  html.lenis {
+    scroll-behavior: auto;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
