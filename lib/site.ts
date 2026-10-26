@@ -13,10 +13,10 @@ export const site = {
     { display: "075 281 813", tel: "+38975281813", international: "+389 75 281 813" },
     { display: "070 470 555", tel: "+38970470555", international: "+389 70 470 555" },
   ],
-  email: "nebulacoworkinspace@gmail.com",
+  email: "nebulaclassroom@gmail.com",
   /** Where new booking requests are emailed, and the sender they come from. */
   notifications: {
-    to: "nebulacoworkinspace@gmail.com",
+    to: "nebulaclassroom@gmail.com",
     from: { name: "Nebula Classroom", email: "bookings@nebulaclassroom.com" },
   },
   instagram: "https://www.instagram.com/nebulacowork_te/",
@@ -34,7 +34,7 @@ export const site = {
   /** Open every day; these are also the bookable hours (features/booking/model/rules.ts). */
   hours: { opens: "08:00", closes: "22:00" },
   photos: {
-    hero: { src: "/images/nebula-classroom-tetovo.jpg", width: 1600, height: 900 },
+    hero: { src: "/images/nebula-classroom-for-rent-tetovo.jpg", width: 1600, height: 900 },
     front: { src: "/images/nebula-classroom-desks.jpg", width: 1600, height: 900 },
     whiteboard: { src: "/images/nebula-classroom-whiteboard.jpg", width: 1600, height: 900 },
     entrance: { src: "/images/nebula-classroom-entrance.jpg", width: 1600, height: 900 },

@@ -39,7 +39,7 @@ the pointer).
 - Name: **Nebula Classroom** (the design's name). Old name "Nebula Co-Working Space" stays as `alternateName` in structured data so the brand searches carry over.
 - Address: Rr. 19 Nëntori, Kompleksi Lovec, 1200 Tetovë, North Macedonia (MK: Ул. 19 Ноември, Комплекс Ловец, 1200 Тетово).
 - Phones: 075 281 813 (main, on every button), 070 470 555.
-- Email: nebulacoworkinspace@gmail.com (the address the old site's form sent to).
+- Email: nebulaclassroom@gmail.com (since 2026-10-26; before that nebulacoworkinspace@gmail.com, the address the old site's form sent to).
 - Instagram: https://www.instagram.com/nebulacowork_te/
 - Hours: open every day; bookable hours 08:00–22:00 (slots start 8:00…21:00).
 - Equipment: fast WiFi, A/C, TV + whiteboard, desks and chairs, bathroom and kitchen, city parking nearby.
@@ -164,7 +164,7 @@ Off-site (launch, step 5)
    respects.
 3. **Notifications** (done 2026-10-26) — the owner gets an email for every
    new request (`features/booking/server/notify.ts`), in Albanian, to
-   nebulacoworkinspace@gmail.com, from bookings@nebulaclassroom.com through
+   nebulaclassroom@gmail.com, from bookings@nebulaclassroom.com through
    Cloudflare Email Sending (binding `EMAIL`); replies go to the client's email.
    Sent after the request is saved (`waitUntil`), so a failed email never loses
    a booking. Locally the emulated email lands in `.wrangler/tmp/email/`. Email
@@ -199,5 +199,5 @@ there's a new migration, then `corepack pnpm run deploy` (with `run`: a bare
 - ~~Exact location~~: the owner's Maps link and pin (§2), used for `geo` and the map button.
 - Any prices to show, or always "Ask for a quote"?
 - Admin language: built in plain standard Albanian (`features/admin/copy.ts`, one file to translate if English is wanted).
-- ~~Notifications~~: email to nebulacoworkinspace@gmail.com (2026-10-26). The same address is the admin login.
+- ~~Notifications~~: email to nebulaclassroom@gmail.com (2026-10-26). The same address is the admin login.
 - Native-speaker check of the Macedonian copy.

@@ -54,8 +54,8 @@ export function Hero({ dict, homeHref }: { dict: Dictionary; homeHref: string })
               fetchPriority="high"
               quality={85}
               sizes={HERO_PHOTO_SIZES}
-              // Shifted right of centre: the photo's left edge is a mesh partition.
-              className="object-cover object-[70%_50%]"
+              // A little right of centre keeps the whiteboard, TV and desks in the middle.
+              className="object-cover object-[60%_50%]"
             />
           </div>
           {/* What's in the room: its own dark panel under the photo. */}

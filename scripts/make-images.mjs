@@ -153,7 +153,7 @@ async function makeShareImages() {
     { name: "Brand", data: textBold, weight: 800 },
     { name: "Brand", data: text, weight: 500 },
   ];
-  const photoJpeg = await sharp(await readFile("public/images/nebula-classroom-tetovo.jpg")).resize(940, 1036, { fit: "cover" }).jpeg({ quality: 82 }).toBuffer();
+  const photoJpeg = await sharp(await readFile("public/images/nebula-classroom-for-rent-tetovo.jpg")).resize(940, 1036, { fit: "cover" }).jpeg({ quality: 82 }).toBuffer();
   const photo = `data:image/jpeg;base64,${photoJpeg.toString("base64")}`;
   await mkdir("public/og", { recursive: true });
   for (const [locale, dict] of Object.entries({ sq, mk, en })) {
